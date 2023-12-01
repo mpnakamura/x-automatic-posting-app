@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Twitter自動投稿アプリ</title>
+    <style>
+        /* ここに必要なスタイリングを追加 */
+        body { font-family: Arial, sans-serif; }
+        textarea { width: 100%; height: 100px; }
+        .tweet-list { margin-top: 20px; }
+        .tweet-item { background-color: #f0f0f0; padding: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Twitter自動投稿アプリ</h1>
+    <form method="post">
+        <textarea name="tweet" placeholder="ツイート内容"></textarea>
+        <input type="submit" name="action" value="ツイート">
+        <input type="submit" name="action" value="保存">
+    </form>
+
+    <div class="tweet-list">
+      {% for tweet in tweets %}
+          <div class="tweet-item">
+              {{ tweet }}
+              <!-- 削除ボタンを追加 -->
+              <form method="post" >
+                  <input type="hidden" name="tweet_to_delete" value="{{ tweet }}">
+                  <input type="submit" name="action" value="削除">
+              </form>
+          </div>
+      {% endfor %}
+  </div>
+</body>
+</html>
