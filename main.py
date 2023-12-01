@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from twitter_api import create_api_v2, post_tweet_v2  # 修正した関数名をインポート
+import os
 
 app = Flask(__name__)
 tweets = []  
@@ -30,7 +31,7 @@ def index():
     return render_template('index.html', message=message, tweets=tweets)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
 
 
 
