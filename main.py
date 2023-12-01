@@ -7,7 +7,10 @@ import os
 
 app = Flask(__name__)
 app = create_app()
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')
+uri = os.getenv("DATABASE_URL")  # HerokuのデータベースURLを取得
+if uri.startswith("postgres://"):
+      uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 client = create_api_v2()  # v2 APIクライアントの作成
 
