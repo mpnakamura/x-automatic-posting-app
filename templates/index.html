@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Twitter自動投稿アプリ</title>
     <style>
-        /* ここに必要なスタイリングを追加 */
+        /* スタイリング */
         body { font-family: Arial, sans-serif; }
         textarea { width: 100%; height: 100px; }
         .tweet-list { margin-top: 20px; }
@@ -23,10 +23,11 @@
     <div class="tweet-list">
       {% for tweet in tweets %}
           <div class="tweet-item">
-              {{ tweet }}
+              <p>{{ tweet.content }}</p>
+              <p><small>投稿日時: {{ tweet.created_at }}</small></p>
               <!-- 削除ボタンを追加 -->
               <form method="post" >
-                  <input type="hidden" name="tweet_to_delete" value="{{ tweet }}">
+                  <input type="hidden" name="tweet_id" value="{{ tweet.id }}">
                   <input type="submit" name="action" value="削除">
               </form>
           </div>

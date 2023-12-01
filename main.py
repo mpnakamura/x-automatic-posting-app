@@ -1,9 +1,14 @@
 from flask import Flask, render_template, request
-from twitter_api import create_api_v2, post_tweet_v2  # 修正した関数名をインポート
+from twitter_api import create_api_v2, post_tweet_v2
+from app import create_app, db
+from models import Tweet # モデルのインポート
+from scheduler import start_scheduler
 import os
 
 app = Flask(__name__)
-tweets = []  
+app = create_app()
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')
+
 client = create_api_v2()  # v2 APIクライアントの作成
 
 @app.route('/', methods=['GET', 'POST'])
@@ -12,29 +17,35 @@ def index():
     if request.method == 'POST':
         action = request.form.get('action')
         tweet_content = request.form.get('tweet')
+        
         if action == 'ツイート':
             try:
-                response = post_tweet_v2(client, tweet_content)  # v2 APIを使用してツイート投稿
-                message = "ツイートが投稿されました: " + str(response)
+                post_tweet_v2(client, tweet_content)
+                message = "ツイートが投稿されました"
             except Exception as e:
-                message = "エラーが発生しました: " + str(e)
+                message = f"エラーが発生しました: {e}"
         elif action == '保存':
-            tweets.append(tweet_content)
+            new_tweet = Tweet(content=tweet_content)
+            db.session.add(new_tweet)
+            db.session.commit()
             message = "ツイートを保存しました"
         elif action == '削除':
-            # リストから特定のツイートを削除
-            tweet_to_delete = request.form.get('tweet_to_delete')
-            if tweet_to_delete in tweets:
-                tweets.remove(tweet_to_delete)
+            tweet_id = request.form.get('tweet_id')
+            tweet_to_delete = Tweet.query.get(tweet_id)
+            if tweet_to_delete:
+                db.session.delete(tweet_to_delete)
+                db.session.commit()
                 message = "ツイートを削除しました"
 
-    return render_template('index.html', message=message, tweets=tweets)
+    tweets = Tweet.query.order_by(Tweet.created_at.desc()).all()
+    return render_template('index.html', tweets=tweets, message=message)
+
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
-
-
-
+    with app.app_context():
+        db.create_all()
+    start_scheduler(app, client)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5001)))
 
 
 
