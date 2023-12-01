@@ -1,11 +1,13 @@
 import tweepy
+import os
 
 def create_api_v2():
     # 環境変数から認証情報を取得
-    consumer_key = "FcN1YDVv0LLvybBvIqsEeJrzj"
-    consumer_secret = "fPBBijNwPxSmaJm3sIz2Jsos86eWC1KxSMmMrYQtmNFkKz2MeG"
-    access_token = '2540071454-YjRWbjYDZnT5BP8ateLFZJr69kjkvasaUyrEgI0'
-    access_token_secret = 'lkayy64jpJu0na78I6NwSJqLmMhwpRVK2Ijpqr8KPDAY0'
+    consumer_key = os.environ.get('CONSUMER_KEY')
+    consumer_secret = os.environ.get('CONSUMER_SECRET')
+    access_token = os.environ.get('ACCESS_TOKEN')
+    access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
+
 
     # Tweepyの新しいクライアントクラスを使用
     client = tweepy.Client(
