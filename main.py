@@ -5,9 +5,11 @@ from models import Tweet
 from gcs_client import GCSClient
 from scheduler import start_scheduler
 import os
+from flask_migrate import Migrate
 
 app= Flask(__name__)
 app = create_app()
+migrate = Migrate(app, db)
 
 client = create_api_v2()  # v2 APIクライアントの作成
 gcs_client = GCSClient()  # GCSクライアントの作成
