@@ -1,5 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from models import Tweet, db
+from models import Tweet
+from app import db
 from twitter_api import post_tweet_v2
 
 def tweet_job(app, client):

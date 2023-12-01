@@ -1,37 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Twitter自動投稿アプリ</title>
     <style>
-        /* スタイリング */
-        body { font-family: Arial, sans-serif; }
-        textarea { width: 100%; height: 100px; }
-        .tweet-list { margin-top: 20px; }
-        .tweet-item { background-color: #f0f0f0; padding: 10px; margin-bottom: 10px; }
+      /* スタイリング */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+      }
+      .tweet-list {
+        margin-top: 20px;
+      }
+      .tweet-item {
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .tweet-image {
+        max-width: 100px;
+        height: auto;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Twitter自動投稿アプリ</h1>
-    <form method="post">
-        <textarea name="tweet" placeholder="ツイート内容"></textarea>
-        <input type="submit" name="action" value="ツイート">
-        <input type="submit" name="action" value="保存">
+    <form method="post" enctype="multipart/form-data">
+      <textarea name="tweet" placeholder="ツイート内容"></textarea><br />
+      <label for="image">画像を選択:</label>
+      <input type="file" name="image" id="image" /><br />
+      <!-- 画像アップロードのためのファイル入力 -->
+      <input type="submit" name="action" value="ツイート" />
+      <input type="submit" name="action" value="保存" />
     </form>
 
     <div class="tweet-list">
       {% for tweet in tweets %}
-          <div class="tweet-item">
-              <p>{{ tweet.content }}</p>
-              <p><small>投稿日時: {{ tweet.created_at }}</small></p>
-              <!-- 削除ボタンを追加 -->
-              <form method="post" >
-                  <input type="hidden" name="tweet_id" value="{{ tweet.id }}">
-                  <input type="submit" name="action" value="削除">
-              </form>
-          </div>
+      <div class="tweet-item">
+        <p>{{ tweet.content }}</p>
+        {% if tweet.image_url %}
+        <img
+          src="{{ tweet.image_url }}"
+          alt="tweet image"
+          class="tweet-image"
+        />
+        <br />
+        {% endif %}
+        <p><small>投稿日時: {{ tweet.created_at }}</small></p>
+        <!-- 削除ボタンを追加 -->
+        <form method="post">
+          <input type="hidden" name="tweet_id" value="{{ tweet.id }}" />
+          <input type="submit" name="action" value="削除" />
+        </form>
+      </div>
       {% endfor %}
-  </div>
-</body>
+    </div>
+  </body>
 </html>
