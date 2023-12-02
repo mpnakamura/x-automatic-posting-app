@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from models import Tweet
 from app import db
-from twitter_api import post_tweet_v2,upload_media,post_tweet_with_media
+from twitter_api import post_tweet_v2, upload_media_v1, post_tweet_with_media
 
 def tweet_job(app, client):
     with app.app_context():
@@ -9,7 +9,7 @@ def tweet_job(app, client):
         if tweet:
             if tweet.image_url:
                 # 画像付きツイート
-                media_id = upload_media(client, tweet.image_url)
+                media_id = upload_media_v1(client, tweet.image_url)
                 post_tweet_with_media(client, tweet.content, media_id)
             else:
                 # テキストのみのツイート
@@ -20,7 +20,6 @@ def tweet_job(app, client):
             # 全てのツイートが投稿された場合、投稿フラグをリセット
             Tweet.query.update({Tweet.posted: False})
             db.session.commit()
-
 
 def start_scheduler(app, client):
     scheduler = BackgroundScheduler()

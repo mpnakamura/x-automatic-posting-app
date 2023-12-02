@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request
-from twitter_api import create_api_v2, post_tweet_v2
+from twitter_api import create_api_v2, post_tweet_v2, upload_media_v1
 from app import create_app, db
 from models import Tweet
 from gcs_client import GCSClient
 import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app= create_app()
+app = create_app()
 client = create_api_v2()  # Twitter API v2クライアントの作成
 gcs_client = GCSClient()  # GCSクライアントの作成
 
@@ -23,11 +24,19 @@ def index():
         if action == 'ツイート':
             try:
                 if image:
-                    extension = os.path.splitext(image.filename)[1].lstrip('.')
-                    unique_filename = gcs_client.upload_file(image, extension)
-                    image_url = gcs_client.get_file_url(unique_filename)
-                    tweet_content_with_image = f"{tweet_content} {image_url}"
-                    post_tweet_v2(client, tweet_content_with_image)
+                    # 画像を一時的に保存
+                    filename = secure_filename(image.filename)
+                    image_path = os.path.join('/tmp', filename)  # 適切な一時ファイルパスを選択
+                    image.save(image_path)
+
+                    # 画像をTwitter API v1.1を使用してアップロード
+                    media_id = upload_media_v1(client, image_path)
+
+                    # ツイートを投稿
+                    post_tweet_v2(client, tweet_content, media_id)
+
+                    # 一時ファイルを削除
+                    os.remove(image_path)
                 else:
                     post_tweet_v2(client, tweet_content)
                 message = "ツイートが投稿されました"
