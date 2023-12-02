@@ -23,12 +23,12 @@ def post_tweet_v2(client, text):
     response = client.create_tweet(text=text)
     return response
 
-def upload_media(client, file_path):
-    """
-    画像をアップロードしてメディアIDを取得する
-    """
-    response = client.upload_media(media=file_path)
-    return response.media_id_string
+def upload_media(client, image):
+    # imageはFileStorageオブジェクトである必要があります
+    # 以下のコードは例であり、実際のTweepyライブラリのメソッドを使用してください
+    media = client.media_upload(filename=image.filename, file=image)
+    return media.media_id
+
 
 def post_tweet_with_media(client, text, media_id):
     """

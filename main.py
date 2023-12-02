@@ -53,7 +53,16 @@ def index():
             db.session.add(new_tweet)
             db.session.commit()
             message = "ツイートを保存しました"
-        # ... その他の処理 ...
+
+        if action == '削除':
+            tweet_id = request.form.get('tweet_id')
+            tweet_to_delete = Tweet.query.get(tweet_id)
+        if tweet_to_delete:
+            db.session.delete(tweet_to_delete)
+            db.session.commit()
+            message = "ツイートを削除しました"
+        else:
+            message = "削除するツイートが見つかりませんでした"
 
     tweets = Tweet.query.order_by(Tweet.created_at.desc()).all()
     return render_template('index.html', tweets=tweets, message=message)
