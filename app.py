@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+from flask_migrate import Migrate
 
 
 db = SQLAlchemy()
@@ -16,5 +17,6 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     return app

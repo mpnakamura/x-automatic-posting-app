@@ -1,55 +1,81 @@
-/* 基本的なスタイリング */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-  line-height: 1.6;
+.bg-dark {
+  background-color: #15202B ; /* 背景色をダークに設定 */
+}
+
+.text-white {
+  color: #ffffff ; /* テキストの色を白に設定 */
+}
+/* メインコンテンツ領域 */
+.main-content {
+  max-width: 600px; /* コンテンツの最大幅 */
+  margin: 0 auto; /* 中央寄せ */
+  background-color: #192734; /* コンテンツエリアの背景色 */
+  border-radius: 10px; /* 角の丸み */
   padding: 20px;
 }
 
-h1 {
-  color: #333;
+/* テキストエリアのスタイル */
+.fixed-textarea {
+  resize: none; /* サイズ変更を無効化 */
+  height: 150px; /* 固定の高さ */
+  width: 100%; /* コンテナの幅に合わせる */
+  background-color: #253341; /* テキストエリアの背景色 */
+  border: none; /* 境界線をなくす */
+  border-radius: 5px; /* 角の丸み */
+  padding: 10px; /* 内側の余白 */
+  color: #8899A6; /* テキストの色 */
+  margin-bottom: 10px; /* 下の要素との距離 */
 }
 
-/* フォーム関連のスタイリング */
-form {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+/* ボタンのスタイル */
+.btn {
+  border-radius: 20px; /* 角の丸み */
+  padding: 10px 20px; /* 内側の余白 */
+}
+/* ボタンのスタイル */
+.btn-primary {
+  background-color: #1DA1F2; /* ボタンの背景色 */
+  border-color: #1DA1F2;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 123, 255, 0.5); /* 軽いシャドウを追加 */
 }
 
-input[type="submit"] {
-  background: #4CAF50;
-  color: #ffffff;
-  border: 0;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+.btn-primary:hover {
+  background-color: #1A91DA; /* ホバー時の色を少し暗く */
+  border-color: #1A91DA;
 }
 
-input[type="submit"]:hover {
-  background: #45a049;
+.btn-secondary {
+  background-color: #6c757d; /* セカンダリーカラー */
+  border-color: #6c757d;
 }
 
-/* ツイートリストのスタイリング */
+.btn-secondary:hover {
+  background-color: #5a6268; /* ホバー時の色を少し暗く */
+  border-color: #5a6268;
+}
+
+/* ツイートリスト */
 .tweet-list {
-  list-style: none;
-  padding: 0;
+  list-style: none; /* リストマーカーを無くす */
+  padding: 0; /* リストのパディングをなくす */
 }
 
+/* ツイートアイテム */
 .tweet-item {
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #253341; /* アイテムの背景色 */
+  margin-bottom: 1rem; /* アイテム間の距離 */
+  padding: 1rem; /* 内側の余白 */
+  border-radius: 5px; /* 角の丸み */
 }
 
-.tweet-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
-  margin-top: 10px;
+/* 画像のスタイル */
+img.tweet-image {
+  max-width: 100%; /* 親要素の幅いっぱい */
+  height: auto; /* 高さを自動で */
+  border-radius: 5px; /* 角の丸み */
+  margin-top: 10px; /* 画像の上の要素との距離 */
+}
+
+#characterCount {
+  color: #ffffff;
 }
