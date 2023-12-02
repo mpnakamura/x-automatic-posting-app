@@ -1,8 +1,9 @@
-# gcs_client.py
 import os
 import json
 from google.cloud import storage
 from google.oauth2 import service_account
+from datetime import datetime
+import uuid
 
 class GCSClient:
     def __init__(self):
@@ -12,12 +13,19 @@ class GCSClient:
         self.client = storage.Client(credentials=credentials, project=os.environ.get('GOOGLE_CLOUD_PROJECT'))
         self.bucket = self.client.bucket(os.environ.get('GCS_BUCKET'))
 
-    def upload_file(self, file_stream, file_name):
+    def generate_unique_filename(self, extension):
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        random_str = uuid.uuid4().hex
+        return f"{timestamp}_{random_str}.{extension}"
+
+    def upload_file(self, file_stream, extension):
         """
         ファイルをGCSバケットにアップロードする
         """
-        blob = self.bucket.blob(file_name)
+        unique_filename = self.generate_unique_filename(extension)
+        blob = self.bucket.blob(unique_filename)
         blob.upload_from_string(file_stream.read(), content_type=file_stream.content_type)
+        return unique_filename
 
     def get_file_url(self, file_name):
         """
