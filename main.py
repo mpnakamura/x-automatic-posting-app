@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from twitter_api import create_api_v2, post_tweet_v2, upload_media_v1
 from app import create_app, db
 from models import Tweet
@@ -95,6 +95,8 @@ def index():
                 message = "ツイートを削除しました"
             else:
                 message = "削除するツイートが見つかりませんでした"
+
+                return redirect(url_for('index'))
 
     tweets = Tweet.query.order_by(Tweet.created_at.desc()).all()
     return render_template('index.html', tweets=tweets, message=message)
