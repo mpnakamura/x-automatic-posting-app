@@ -2,8 +2,7 @@ from flask import Flask, render_template, request
 from twitter_api import create_api_v2, post_tweet_v2
 from app import create_app, db
 from models import Tweet
-from gcs_client import GCSClient
-from utils import generate_unique_filename
+from gcs_client import GCSClient,generate_unique_filename
 import os
 
 app = Flask(__name__)
