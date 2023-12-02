@@ -17,6 +17,7 @@ gcs_client = GCSClient()  # GCSクライアントの作成
 @app.route('/', methods=['GET', 'POST'])
 def index():
     message = ""
+    tweet_to_delete = None
     image_url = None  # image_urlの初期化を関数の外で行う
 
     if request.method == 'POST':
