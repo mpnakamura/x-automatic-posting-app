@@ -1,0 +1,55 @@
+/* 基本的なスタイリング */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+/* フォーム関連のスタイリング */
+form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+input[type="submit"] {
+  background: #4CAF50;
+  color: #ffffff;
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background: #45a049;
+}
+
+/* ツイートリストのスタイリング */
+.tweet-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tweet-item {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tweet-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-top: 10px;
+}

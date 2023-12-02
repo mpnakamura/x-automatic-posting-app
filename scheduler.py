@@ -53,5 +53,5 @@ def tweet_job(app, client):
 
 def start_scheduler(app, client):
     scheduler = BackgroundScheduler()
-    scheduler.add_job(func=lambda: tweet_job(app, client), trigger="interval", minutes=480)
+    scheduler.add_job(func=lambda: tweet_job(app, client), trigger="interval", minutes=160)
     scheduler.start()
