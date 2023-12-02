@@ -23,6 +23,8 @@ gcs_client = GCSClient()  # GCSクライアントの作成
 USERNAME = os.environ.get('MY_APP_USERNAME')
 PASSWORD = os.environ.get('MY_APP_PASSWORD')
 
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
