@@ -28,10 +28,23 @@ def create_api_v2():
     )
     return client
 
-def post_tweet_v2(client, text):
-    # Twitter API v2を使用してツイートを投稿
-    response = client.create_tweet(text=text)
-    return response
+def post_tweet_v2(client, text, media_id=None):
+    """
+    ツイートを投稿する。画像がある場合はmedia_idを使用する。
+    """
+    try:
+        if media_id:
+            # 画像付きツイートを投稿
+            response = client.create_tweet(text=text, media_ids=[media_id])
+        else:
+            # テキストのみのツイートを投稿
+            response = client.create_tweet(text=text)
+        logger.info(f"Tweet posted successfully: {response.data['id']}")
+        return response
+    except Exception as e:
+        logger.error(f"Error posting tweet: {e}")
+        raise e
+
 
 def upload_media_v1(image_path):
     try:
