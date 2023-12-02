@@ -23,6 +23,7 @@
     <div class="container py-5">
     
       <main class="main-content">
+        <a href="{{ url_for('logout') }}">ログアウト</a>
         <h2 class="mb-4 text-center">X(旧Twitter)自動投稿アプリ</h2>
         <form method="post" enctype="multipart/form-data" class="mb-4">
           {% if message %}

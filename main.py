@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,flash, session
 from twitter_api import create_api_v2, post_tweet_v2, upload_media_v1
 from app import create_app, db
 from models import Tweet
@@ -15,12 +15,37 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24) 
 app = create_app()
 client = create_api_v2()  # Twitter API v2クライアントの作成
 gcs_client = GCSClient()  # GCSクライアントの作成
 
+USERNAME = os.environ.get('MY_APP_USERNAME')
+PASSWORD = os.environ.get('MY_APP_PASSWORD')
+
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == USERNAME and password == PASSWORD:
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            flash('ユーザー名またはパスワードが間違っています。')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+
     message = ""
     tweet_to_delete = None
 
