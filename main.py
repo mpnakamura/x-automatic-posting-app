@@ -5,6 +5,11 @@ from models import Tweet
 from gcs_client import GCSClient
 import os
 from werkzeug.utils import secure_filename
+import logging
+
+# ロギングの設定
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app = create_app()
@@ -24,23 +29,32 @@ def index():
         if action == 'ツイート':
             try:
                 if image:
+                    logger.info("画像がアップロードされました")
+
                     # 画像を一時的に保存
                     filename = secure_filename(image.filename)
                     image_path = os.path.join('/tmp', filename)  # 適切な一時ファイルパスを選択
                     image.save(image_path)
+                    logger.info(f"画像を一時保存しました: {image_path}")
 
                     # 画像をTwitter API v1.1を使用してアップロード
                     media_id = upload_media_v1(client, image_path)
+                    logger.info(f"Media IDを取得しました: {media_id}")
 
                     # ツイートを投稿
                     post_tweet_v2(client, tweet_content, media_id)
+                    logger.info("画像付きツイートを投稿しました")
 
                     # 一時ファイルを削除
                     os.remove(image_path)
+                    logger.info("一時ファイルを削除しました")
                 else:
                     post_tweet_v2(client, tweet_content)
+                    logger.info("画像なしでツイートを投稿しました")
+
                 message = "ツイートが投稿されました"
             except Exception as e:
+                logger.error(f"エラーが発生しました: {e}")
                 message = f"エラーが発生しました: {e}"
         elif action == '保存':
             if image:
