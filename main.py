@@ -86,6 +86,10 @@ def index():
             tweet_id = request.form.get('tweet_id')
             tweet_to_delete = Tweet.query.get(tweet_id)
             if tweet_to_delete:
+                # GCSに保存されている画像も削除
+                if tweet_to_delete.image_url:
+                    gcs_client.delete_file(tweet_to_delete.image_url)
+                    logger.info(f"GCSに保存されている画像を削除しました: {tweet_to_delete.image_url}")
                 db.session.delete(tweet_to_delete)
                 db.session.commit()
                 message = "ツイートを削除しました"

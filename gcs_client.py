@@ -34,3 +34,15 @@ class GCSClient:
         """
         blob = self.bucket.blob(file_name)
         return blob.public_url
+    
+    def delete_file(self, file_url):
+        """
+        GCSバケットからファイルを削除する
+        """
+        # ファイル名をURLから抽出
+        file_name = file_url.split('/')[-1]
+
+        # ファイルを削除
+        blob = self.bucket.blob(file_name)
+        blob.delete()
+       
