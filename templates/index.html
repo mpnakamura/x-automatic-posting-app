@@ -23,7 +23,7 @@
     <div class="container py-5">
     
       <main class="main-content">
-        <h1 class="mb-4 text-center">X(旧Twitter)自動投稿アプリ</h1>
+        <h2 class="mb-4 text-center">X(旧Twitter)自動投稿アプリ</h2>
         <form method="post" enctype="multipart/form-data" class="mb-4">
           {% if message %}
           <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -36,7 +36,7 @@
             <label for="tweet" class="form-label"
               ><i class="bi bi-pencil-square"></i> ツイート内容</label
             >
-            <textarea class="form-control fixed-textarea" id="tweet" name="tweet" placeholder="何を考えていますか？" oninput="countCharacters()"></textarea>
+            <textarea class="form-control fixed-textarea" id="tweet" name="tweet" placeholder="ここに入力してください" oninput="countCharacters()"></textarea>
             <!-- 残り文字数を表示する部分のIDが正しく設定されているか確認 -->
 <div id="characterCount" class="text-end ">
     残り文字数: <span id="remaining">280</span>
