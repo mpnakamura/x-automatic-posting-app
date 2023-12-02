@@ -15,10 +15,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY')
 app = create_app()
+app.secret_key = os.environ.get('SECRET_KEY')
 client = create_api_v2()  # Twitter API v2クライアントの作成
 gcs_client = GCSClient()  # GCSクライアントの作成
+
 
 USERNAME = os.environ.get('MY_APP_USERNAME')
 PASSWORD = os.environ.get('MY_APP_PASSWORD')
