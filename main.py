@@ -38,7 +38,7 @@ def index():
                     logger.info(f"画像を一時保存しました: {image_path}")
 
                     # 画像をTwitter API v1.1を使用してアップロード
-                    media_id = upload_media_v1(client, image_path)
+                    media_id = upload_media_v1(image_path)
                     logger.info(f"Media IDを取得しました: {media_id}")
 
                     # ツイートを投稿
