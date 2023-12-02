@@ -6,6 +6,8 @@ from gcs_client import GCSClient
 import os
 from werkzeug.utils import secure_filename
 import logging
+from scheduler import start_scheduler
+
 
 # ロギングの設定
 logging.basicConfig(level=logging.INFO)
@@ -56,17 +58,28 @@ def index():
             except Exception as e:
                 logger.error(f"エラーが発生しました: {e}")
                 message = f"エラーが発生しました: {e}"
-        elif action == '保存':
+
+
+        if action == '保存':
             if image:
+                # 画像の拡張子を取得し、一意のファイル名を生成
                 extension = os.path.splitext(image.filename)[1].lstrip('.')
                 unique_filename = gcs_client.upload_file(image, extension)
+                
+                # GCSにアップロードした画像のURLを取得
                 image_url = gcs_client.get_file_url(unique_filename)
+                
+                # 新しいツイートをデータベースに保存
                 new_tweet = Tweet(content=tweet_content, image_url=image_url)
+                db.session.add(new_tweet)
+                db.session.commit()
+                message = "ツイートを保存しました"
             else:
                 new_tweet = Tweet(content=tweet_content)
-            db.session.add(new_tweet)
-            db.session.commit()
-            message = "ツイートを保存しました"
+                db.session.add(new_tweet)
+                db.session.commit()
+                message = "ツイートを保存しました"
+
 
         if action == '削除':
             tweet_id = request.form.get('tweet_id')
@@ -84,4 +97,5 @@ def index():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        start_scheduler(app, client)
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
