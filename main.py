@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from twitter_api import create_api_v2, post_tweet_v2
 from app import create_app, db
 from models import Tweet
-from gcs_client import GCSClient,generate_unique_filename
+from gcs_client import GCSClient
 import os
 
 app = Flask(__name__)
@@ -23,32 +23,24 @@ def index():
         if action == 'ツイート':
             try:
                 if image:
-                    # 画像をGCSにアップロードし、URLを取得
                     extension = os.path.splitext(image.filename)[1].lstrip('.')
-                    unique_filename = generate_unique_filename(extension)
-                    gcs_client.upload_file(image, unique_filename)
+                    unique_filename = gcs_client.upload_file(image, extension)
                     image_url = gcs_client.get_file_url(unique_filename)
-
-                    # 画像のURLをツイートの本文に含める
                     tweet_content_with_image = f"{tweet_content} {image_url}"
                     post_tweet_v2(client, tweet_content_with_image)
                 else:
-                    # 画像なしでツイートを投稿
                     post_tweet_v2(client, tweet_content)
-
                 message = "ツイートが投稿されました"
             except Exception as e:
                 message = f"エラーが発生しました: {e}"
         elif action == '保存':
-            image_url = None
             if image:
-                # 画像がある場合のみimage_urlを設定
                 extension = os.path.splitext(image.filename)[1].lstrip('.')
-                unique_filename = generate_unique_filename(extension)
-                gcs_client.upload_file(image, unique_filename)
+                unique_filename = gcs_client.upload_file(image, extension)
                 image_url = gcs_client.get_file_url(unique_filename)
-
-            new_tweet = Tweet(content=tweet_content, image_url=image_url)
+                new_tweet = Tweet(content=tweet_content, image_url=image_url)
+            else:
+                new_tweet = Tweet(content=tweet_content)
             db.session.add(new_tweet)
             db.session.commit()
             message = "ツイートを保存しました"
