@@ -1,5 +1,13 @@
 import tweepy
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 
@@ -26,16 +34,23 @@ def post_tweet_v2(client, text):
     return response
 
 def upload_media_v1(image_path):
-    """
-    画像をTwitter API v1.1を使用してアップロードし、メディアIDを取得する
-    """
-    auth = tweepy.OAuthHandler(os.environ.get('CONSUMER_KEY'), os.environ.get('CONSUMER_SECRET'))
-    auth.set_access_token(os.environ.get('ACCESS_TOKEN'), os.environ.get('ACCESS_TOKEN_SECRET'))
-    api_v1 = tweepy.API(auth)
+    try:
+        auth = tweepy.OAuthHandler(os.environ.get('CONSUMER_KEY'), os.environ.get('CONSUMER_SECRET'))
+        auth.set_access_token(os.environ.get('ACCESS_TOKEN'), os.environ.get('ACCESS_TOKEN_SECRET'))
+        api_v1 = tweepy.API(auth)
 
-    media = api_v1.media_upload(image_path)
-    return media.media_id_string
+        media = api_v1.media_upload(image_path)
+        logger.info(f"Media uploaded successfully: {media.media_id_string}")
+        return media.media_id_string
+    except Exception as e:
+        logger.error(f"Error uploading media: {e}")
+        raise e
 
 def post_tweet_with_media(client, text, media_id):
-    # メディアIDを使用して画像付きツイートを投稿
-    client.update_status(status=text, media_ids=[media_id])
+    try:
+        response = client.create_tweet(text=text, media_ids=[media_id])
+        logger.info(f"Tweet posted successfully with media ID: {media_id}")
+        return response
+    except Exception as e:
+        logger.error(f"Error posting tweet with media: {e}")
+        raise e
