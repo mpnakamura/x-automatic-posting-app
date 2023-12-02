@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24) 
+app.secret_key = os.environ.get('SECRET_KEY')
 app = create_app()
 client = create_api_v2()  # Twitter API v2クライアントの作成
 gcs_client = GCSClient()  # GCSクライアントの作成
