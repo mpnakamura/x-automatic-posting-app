@@ -80,14 +80,16 @@ def index():
                     os.remove(image_path)
 
                 if media_ids:
-                    # 画像付きツイートを投稿
+                    logger.info("投稿するツイート内容: " + tweet_content)
+                    logger.info("添付するメディアID: " + str(media_ids))
                     post_tweet_v2(client, tweet_content, media_ids)
                     logger.info("画像付きツイートを投稿しました")
                 else:
-                    # 画像なしでツイートを投稿
+                    logger.info("投稿するツイート内容: " + tweet_content)
                     post_tweet_v2(client, tweet_content)
                     logger.info("画像なしでツイートを投稿しました")
-
+                    
+                logger.info("データベースへの保存は行っていません")
                 message = "ツイートが投稿されました"
             except Exception as e:
                 logger.error(f"エラーが発生しました: {e}")
@@ -125,8 +127,9 @@ def index():
             # カンマ区切りの画像URLをリストに変換
                     image_urls = tweet_to_delete.image_url.split(',')
                     for url in image_urls:
-                        gcs_client.delete_file(url)
-                        logger.info(f"GCSに保存されている画像を削除しました: {url}")
+                        gcs_client.delete_files(image_urls)
+                        for url in image_urls:
+                            logger.info(f"GCSに保存されている画像を削除しました: {url}")
 
                 db.session.delete(tweet_to_delete)
                 db.session.commit()
