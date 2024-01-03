@@ -49,7 +49,10 @@
     id="image-upload"
     name="image"
     class="form-control"
+    multiple
     hidden
+    accept="image/*"
+    onchange="updateImageDisplay()"
   />
   <button
     class="btn btn-outline-primary mt-2"
