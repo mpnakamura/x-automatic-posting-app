@@ -32,3 +32,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // 初期ロード時の文字数カウントを更新
   countCharacters();
 });
+
+
+function updateImageDisplay() {
+  var preview = document.getElementById('image-preview');
+  var files = document.getElementById('image-upload').files;
+
+  // 既存のプレビューをクリア
+  preview.innerHTML = '';
+
+  if (files) {
+    Array.from(files).forEach(file => {
+      var img = document.createElement('img');
+      img.classList.add('img-thumbnail');
+      img.file = file;
+      preview.appendChild(img); // 画像をプレビュー領域に追加
+
+      var reader = new FileReader();
+      reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+      reader.readAsDataURL(file);
+    });
+  }
+}
