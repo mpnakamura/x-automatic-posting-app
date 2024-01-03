@@ -28,14 +28,14 @@ def create_api_v2():
     )
     return client
 
-def post_tweet_v2(client, text, media_id=None):
+def post_tweet_v2(client, text, media_ids=None):
     """
-    ツイートを投稿する。画像がある場合はmedia_idを使用する。
+    ツイートを投稿する。複数の画像がある場合はmedia_idsリストを使用する。
     """
     try:
-        if media_id:
-            # 画像付きツイートを投稿
-            response = client.create_tweet(text=text, media_ids=[media_id])
+        if media_ids:
+            # 複数画像付きツイートを投稿
+            response = client.create_tweet(text=text, media_ids=media_ids)
         else:
             # テキストのみのツイートを投稿
             response = client.create_tweet(text=text)

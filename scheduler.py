@@ -27,17 +27,19 @@ def tweet_job(app, client):
         if tweet:
             try:
                 if tweet.image_url:
-                    # GCSから画像をダウンロードし、一時的に保存
-                    image_path = download_image(tweet.image_url)
+                    # 画像URLをリストに変換
+                    image_urls = tweet.image_url.split(',')
+                    media_ids = []
 
-                    # 画像をTwitterにアップロード
-                    media_id = upload_media_v1(image_path)
+                    # 各画像URLに対して処理
+                    for url in image_urls:
+                        image_path = download_image(url)
+                        media_id = upload_media_v1(image_path)
+                        media_ids.append(media_id)
+                        os.remove(image_path)
 
                     # 画像付きツイートを投稿
-                    post_tweet_with_media(client, tweet.content, media_id)
-
-                    # 一時ファイルを削除
-                    os.remove(image_path)
+                    post_tweet_v2(client, tweet.content, media_ids)
                 else:
                     # テキストのみのツイート
                     post_tweet_v2(client, tweet.content)
@@ -50,6 +52,7 @@ def tweet_job(app, client):
             # 全てのツイートが投稿された場合、投稿フラグをリセット
             Tweet.query.update({Tweet.posted: False})
             db.session.commit()
+
 
 def start_scheduler(app, client):
     scheduler = BackgroundScheduler()
