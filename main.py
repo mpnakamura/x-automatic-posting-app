@@ -51,6 +51,7 @@ def index():
 
     message = ""
     tweet_to_delete = None
+    image_urls = []  # 追加
 
     if request.method == 'POST':
         action = request.form.get('action')
