@@ -107,6 +107,11 @@ img.tweet-image {
 
 
 .image-container img.expanded {
-  transform: scale(2); /* サイズを2倍に拡大 */
-  cursor: zoom-out; /* カーソルスタイルを変更 */
+  position: absolute;
+  z-index: 10;
+  transform: scale(2);
+  cursor: zoom-out;
+  object-fit: contain;
+  top: 0;
+  left: 0;
 }
