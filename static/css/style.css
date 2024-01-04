@@ -112,6 +112,11 @@ img.tweet-image {
   max-width: none;
   max-height: none;
   object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2); /* 中心から拡大 */
+  z-index: 10; /* 他の要素の上に表示 */
 }
 
 
