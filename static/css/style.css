@@ -92,11 +92,11 @@ img.tweet-image {
 }
 
 .image-container {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 
@@ -110,15 +110,22 @@ img.tweet-image {
   width: 100%; /* 全幅 */
   height: 100%; /* 全高 */
   overflow: auto; /* スクロール可能に */
-  background-color: rgba(0, 0, 0, 0.9); /* 背景色 */
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.5); 
+  transition: 0.25s ease-out;/* 背景色 */
 }
 
 /* モーダル内の画像 */
 .modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px; /* 最大幅 */
+  position: absolute;
+  max-width: 80%;
+  max-height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0;
+  transition: 0.5s ease-out;
 }
 
 /* 閉じるボタンのスタイル */
