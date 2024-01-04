@@ -87,8 +87,8 @@ img.tweet-image {
 .image-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 5px; /* 画像間の隙間 */
-  position: relative;
+  gap: 2px; /* 画像間の隙間 */
+  
 }
 
 .image-container {
@@ -97,6 +97,13 @@ img.tweet-image {
   align-items: center;
   width: 100px;  /* 修正: 固定幅にする */
   height: 100px; /* 修正: 固定高さにする */
+  overflow: hidden; 
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像をトリミングして表示 */
 }
 
 
