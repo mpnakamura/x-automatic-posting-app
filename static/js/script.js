@@ -59,15 +59,12 @@ function showModal(container) {
   var img = container.getElementsByTagName('img')[0];
   var modal = document.getElementById("imageModal");
   var modalImg = document.getElementById("modalImage");
-  var captionText = document.getElementById("caption");
 
   modal.style.display = "block";
   modalImg.src = img.src;
-  captionText.innerHTML = img.alt;
 
-  // 閉じるボタンの取得とイベントリスナーの設定
-  var span = document.getElementsByClassName("close")[0];
-  span.onclick = function() { 
+  // モーダルをクリックしたら閉じる
+  modal.onclick = function() {
     modal.style.display = "none";
   }
 }
