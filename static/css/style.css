@@ -83,3 +83,14 @@ img.tweet-image {
 #characterCount {
   color: #ffffff;
 }
+
+.small-image {
+  max-width: 100px; /* 初期サイズを小さく設定 */
+  max-height: 100px;
+  cursor: pointer; /* クリック可能であることを示すカーソル */
+}
+
+.expanded-image {
+  max-width: 100%; /* 元のサイズに戻す */
+  max-height: 100%;
+}

@@ -54,3 +54,13 @@ function updateImageDisplay() {
     });
   }
 }
+
+function expandImage(imageElement) {
+  if (imageElement.classList.contains('small-image')) {
+    imageElement.classList.remove('small-image');
+    imageElement.classList.add('expanded-image');
+  } else {
+    imageElement.classList.remove('expanded-image');
+    imageElement.classList.add('small-image');
+  }
+}
