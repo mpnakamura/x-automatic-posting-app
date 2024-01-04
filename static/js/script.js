@@ -55,11 +55,20 @@ function updateImageDisplay() {
   }
 }
 
-function expandImage(container) {
+function showModal(container) {
   var img = container.getElementsByTagName('img')[0];
-  if (img.classList.contains('expanded')) {
-    img.classList.remove('expanded');
-  } else {
-    img.classList.add('expanded');
+  var modal = document.getElementById("imageModal");
+  var modalImg = document.getElementById("modalImage");
+  var captionText = document.getElementById("caption");
+
+  modal.style.display = "block";
+  modalImg.src = img.src;
+  captionText.innerHTML = img.alt;
+
+  // 閉じるボタンの取得とイベントリスナーの設定
+  var span = document.getElementsByClassName("close")[0];
+  span.onclick = function() { 
+    modal.style.display = "none";
   }
 }
+

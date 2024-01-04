@@ -83,7 +83,11 @@
             </button>
           </div>
         </form>
-
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+           <img class="modal-content" id="modalImage" alt="モーダル画像">
+          <div id="caption"></div>
+        </div>
         <div class="tweet-list">
           {% for tweet in tweets %}
           <div class="tweet-item mb-3 p-3 border rounded">
@@ -91,7 +95,7 @@
             {% if tweet.images %}
             <div class="image-grid">
               {% for image in tweet.images %}
-                <div class="image-container" onclick="expandImage(this)">
+                <div class="image-container" onclick="showModal(this)">
                   <img src="{{ image.url }}" alt="tweet image" class="tweet-image img-fluid" />
                 </div>
               {% endfor %}
