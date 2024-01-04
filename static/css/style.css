@@ -112,6 +112,19 @@ img.tweet-image {
   transform: scale(2);
   cursor: zoom-out;
   object-fit: contain;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+}
+
+
+.img-fluid.expanded {
+  transform: scale(2);  /* サイズを2倍に拡大 */
+  cursor: zoom-out;    /* カーソルスタイルを変更 */
+  position: absolute;
+  z-index: 10;
+  object-fit: contain;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
 }
