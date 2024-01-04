@@ -55,10 +55,11 @@ function updateImageDisplay() {
   }
 }
 
-function expandImage(imageElement) {
-  if (imageElement.classList.contains('expanded')) {
-    imageElement.classList.remove('expanded');
+function expandImage(container) {
+  var img = container.getElementsByTagName('img')[0];
+  if (img.classList.contains('expanded')) {
+    img.classList.remove('expanded');
   } else {
-    imageElement.classList.add('expanded');
+    img.classList.add('expanded');
   }
 }
