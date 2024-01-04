@@ -57,9 +57,9 @@ function updateImageDisplay() {
 
 function expandImage(containerElement) {
   let img = containerElement.getElementsByTagName('img')[0];
-  if (containerElement.classList.contains('expanded-image')) {
-    containerElement.classList.remove('expanded-image');
+  if (img.classList.contains('expanded')) {
+    img.classList.remove('expanded');
   } else {
-    containerElement.classList.add('expanded-image');
+    img.classList.add('expanded');
   }
 }
