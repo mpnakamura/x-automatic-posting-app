@@ -110,12 +110,11 @@ img.tweet-image {
 .image-container img.expanded {
   position: absolute;
   z-index: 10;
-  transform: scale(2);
   cursor: zoom-out;
   object-fit: contain;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(2);
+  top: -50%;
+  left: -50%;
+  
 }
 
 
