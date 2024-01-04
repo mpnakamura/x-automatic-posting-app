@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash, session
 from twitter_api import create_api_v2, post_tweet_v2, upload_media_v1
 from app import create_app, db
-from models import Tweet
+from models import Tweet,Image
 from gcs_client import GCSClient
 import os
 from werkzeug.utils import secure_filename
@@ -97,46 +97,43 @@ def index():
 
         if action == '保存':
             images = request.files.getlist('image')  # 複数の画像ファイルを取得
-            image_urls = []
-
-            for image in images:
-             # 画像の拡張子を取得し、一意のファイル名を生成
-                extension = os.path.splitext(image.filename)[1].lstrip('.')
-                unique_filename = gcs_client.upload_file(image, extension)
-        
-                # GCSにアップロードした画像のURLを取得しリストに追加
-                image_url = gcs_client.get_file_url(unique_filename)
-                image_urls.append(image_url)
-
-            # 画像URLリストをカンマ区切りの文字列に変換
-                image_urls_str = ','.join(image_urls)
 
             # 新しいツイートをデータベースに保存
-                new_tweet = Tweet(content=tweet_content, image_url=image_urls_str)
-                db.session.add(new_tweet)
-                db.session.commit()
-                message = "ツイートを保存しました"
+            new_tweet = Tweet(content=tweet_content)
+            db.session.add(new_tweet)
+            db.session.commit()
+
+            for image in images:
+                # 画像の拡張子を取得し、一意のファイル名を生成
+                extension = os.path.splitext(image.filename)[1].lstrip('.')
+                unique_filename = gcs_client.upload_file(image, extension)
+
+                # GCSにアップロードした画像のURLを取得し、Imageモデルに追加
+                image_url = gcs_client.get_file_url(unique_filename)
+                new_image = Image(tweet_id=new_tweet.id, url=image_url)
+                db.session.add(new_image)
+
+            db.session.commit()
+            message = "ツイートを保存しました"
+
 
 
         if action == '削除':
-            tweet_id = request.form.get('tweet_id')
-            tweet_to_delete = Tweet.query.get(tweet_id)
-            if tweet_to_delete:
-        # GCSに保存されている画像も削除
-                if tweet_to_delete.image_url:
-            # カンマ区切りの画像URLをリストに変換
-                    image_urls = tweet_to_delete.image_url.split(',')
-                    for url in image_urls:
-                        gcs_client.delete_files(image_urls)
-                        for url in image_urls:
-                            logger.info(f"GCSに保存されている画像を削除しました: {url}")
+           tweet_id = request.form.get('tweet_id')
+           tweet_to_delete = Tweet.query.get(tweet_id)
+           if tweet_to_delete:
+               # 関連する画像を削除
+               images_to_delete = Image.query.filter_by(tweet_id=tweet_id).all()
+               for image in images_to_delete:
+                   gcs_client.delete_files([image.url])
+                   logger.info(f"GCSに保存されている画像を削除しました: {image.url}")
+                   db.session.delete(image)
 
-                db.session.delete(tweet_to_delete)
-                db.session.commit()
-                message = "ツイートを削除しました"
-            else:
-                message = "削除するツイートが見つかりませんでした"
-                return redirect(url_for('index'))
+               db.session.delete(tweet_to_delete)
+               db.session.commit()
+               message = "ツイートを削除しました"
+           else:
+               message = "削除するツイートが見つかりませんでした"
 
 
     tweets = Tweet.query.order_by(Tweet.created_at.desc()).all()

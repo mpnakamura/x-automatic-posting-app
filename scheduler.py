@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from models import Tweet
+from models import Tweet,Image
 from app import db
 from twitter_api import post_tweet_v2, upload_media_v1, post_tweet_with_media
 import requests
@@ -23,17 +23,18 @@ def download_image(image_url):
 
 def tweet_job(app, client):
     with app.app_context():
+        # 最新で未投稿のツイートを取得
         tweet = Tweet.query.filter_by(posted=False).order_by(Tweet.created_at.desc()).first()
         if tweet:
             try:
-                if tweet.image_url:
-                    # 画像URLをリストに変換
-                    image_urls = tweet.image_url.split(',')
-                    media_ids = []
+                # 関連する画像を取得
+                images = Image.query.filter_by(tweet_id=tweet.id).all()
+                media_ids = []
 
-                    # 各画像URLに対して処理
-                    for url in image_urls:
-                        image_path = download_image(url)
+                if images:
+                    # 各画像に対して処理
+                    for image in images:
+                        image_path = download_image(image.url)
                         media_id = upload_media_v1(image_path)
                         media_ids.append(media_id)
                         os.remove(image_path)
@@ -52,6 +53,7 @@ def tweet_job(app, client):
             # 全てのツイートが投稿された場合、投稿フラグをリセット
             Tweet.query.update({Tweet.posted: False})
             db.session.commit()
+
 
 
 def start_scheduler(app, client):
