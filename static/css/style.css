@@ -94,7 +94,7 @@ img.tweet-image {
 .image-container {
   width: 100px;
   height: 100px;
-  overflow: hidden; /* 正方形の領域外は隠す */
+  overflow: hidden;
   position: relative;
   cursor: pointer;
 }
@@ -102,20 +102,18 @@ img.tweet-image {
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  transition: transform 0.3s ease;/* 画像をコンテナに合わせてトリミング */
+  object-fit: cover;
+  transition: all 0.3s ease;
 }
-
 
 .image-container img.expanded {
-  cursor: zoom-in; /* カーソルスタイルを変更 */
-  position: relative;
-  z-index: 10;
-  object-fit: contain; /* トリミングを解除して元のアスペクト比で表示 */
-  width: auto; /* 元の画像サイズに戻す */
-  height: auto;
+  object-fit: contain; /* 元のアスペクト比に戻す */
+  position: static; /* 位置をリセット */
+  width: auto; /* 元の幅に戻す */
+  height: auto; /* 元の高さに戻す */
+  max-width: none; /* 最大幅の制限を解除 */
+  max-height: none; /* 最大高さの制限を解除 */
 }
-
 
 
 
