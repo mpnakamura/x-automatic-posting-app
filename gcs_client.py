@@ -46,4 +46,4 @@ class GCSClient:
             # ファイルを削除
             blob = self.bucket.blob(file_name)
             blob.delete()
-       
+

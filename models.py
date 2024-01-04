@@ -7,12 +7,15 @@ from werkzeug.security import generate_password_hash
 class Tweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(280), nullable=False)
-    image_url = db.Column(db.String(500), nullable=True)  
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     posted = db.Column(db.Boolean, default=False)
+    images = db.relationship('Image', backref='tweet', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Tweet %r>' % self.content
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tweet_id = db.Column(db.Integer, db.ForeignKey('tweet.id'), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+
 
 
 class User(UserMixin, db.Model):

@@ -88,7 +88,7 @@ def index():
                     logger.info("投稿するツイート内容: " + tweet_content)
                     post_tweet_v2(client, tweet_content)
                     logger.info("画像なしでツイートを投稿しました")
-                    
+
                 logger.info("データベースへの保存は行っていません")
                 message = "ツイートが投稿されました"
             except Exception as e:
@@ -99,23 +99,23 @@ def index():
             images = request.files.getlist('image')  # 複数の画像ファイルを取得
             image_urls = []
 
-        for image in images:
+            for image in images:
              # 画像の拡張子を取得し、一意のファイル名を生成
-            extension = os.path.splitext(image.filename)[1].lstrip('.')
-            unique_filename = gcs_client.upload_file(image, extension)
+                extension = os.path.splitext(image.filename)[1].lstrip('.')
+                unique_filename = gcs_client.upload_file(image, extension)
         
                 # GCSにアップロードした画像のURLを取得しリストに追加
-            image_url = gcs_client.get_file_url(unique_filename)
-            image_urls.append(image_url)
+                image_url = gcs_client.get_file_url(unique_filename)
+                image_urls.append(image_url)
 
             # 画像URLリストをカンマ区切りの文字列に変換
-            image_urls_str = ','.join(image_urls)
+                image_urls_str = ','.join(image_urls)
 
-    # 新しいツイートをデータベースに保存
-            new_tweet = Tweet(content=tweet_content, image_url=image_urls_str)
-            db.session.add(new_tweet)
-            db.session.commit()
-            message = "ツイートを保存しました"
+            # 新しいツイートをデータベースに保存
+                new_tweet = Tweet(content=tweet_content, image_url=image_urls_str)
+                db.session.add(new_tweet)
+                db.session.commit()
+                message = "ツイートを保存しました"
 
 
         if action == '削除':
