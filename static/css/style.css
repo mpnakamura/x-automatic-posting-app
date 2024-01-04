@@ -84,13 +84,32 @@ img.tweet-image {
   color: #ffffff;
 }
 
-.small-image {
-  max-width: 100px; /* 初期サイズを小さく設定 */
-  max-height: 100px;
-  cursor: pointer; /* クリック可能であることを示すカーソル */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px; /* 画像間の隙間 */
+}
+
+.image-container {
+  width: 100px;
+  height: 100px;
+  overflow: hidden; /* 正方形の領域外は隠す */
+  position: relative;
+  cursor: pointer;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像をコンテナに合わせてトリミング */
 }
 
 .expanded-image {
-  max-width: 100%; /* 元のサイズに戻す */
-  max-height: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 80%;
+  max-height: 80%;
+  z-index: 10;
 }

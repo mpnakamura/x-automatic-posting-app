@@ -90,14 +90,13 @@
           <div class="tweet-item mb-3 p-3 border rounded">
             <p>{{ tweet.content }}</p>
             {% if tweet.images %}
-            {% for image in tweet.images %}
-  <img
-    src="{{ image.url }}"
-    alt="tweet image"
-    class="tweet-image img-fluid mb-2 small-image"
-    onclick="expandImage(this)"
-  />
-{% endfor %}
+            <div class="image-grid">
+              {% for image in tweet.images %}
+                <div class="image-container" onclick="expandImage(this)">
+                  <img src="{{ image.url }}" alt="tweet image" class="tweet-image img-fluid" />
+                </div>
+              {% endfor %}
+            </div>
             {% endif %}
             <p>
               <small>投稿日時: {{ tweet.created_at }}</small>
