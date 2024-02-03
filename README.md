@@ -1,9 +1,6 @@
 # X(旧Twitter)への自動投稿アプリを作成してみました。
 
-<img src="https://github.com/mpnakamura/x-automatic-posting-app/assets/142252092/27d9477a-a690-40be-99ed-8b32d24b7f7e" width="250" height="250" alt="IMG_5015">
-<img src="https://github.com/mpnakamura/x-automatic-posting-app/assets/142252092/0bb10923-534c-4841-abce-6a1bbffe615e" width="250" height="250" alt="IMG_5014">
-<img src="https://github.com/mpnakamura/x-automatic-posting-app/assets/142252092/9d6dbbb5-7edb-4ab4-bcd5-a507fec85d5c" width="250" height="250" alt="IMG_5013">
-
+![x-app](https://github.com/mpnakamura/x-automatic-posting-app/assets/142252092/42b717b9-eb45-42b0-8ee5-e78202f1ad8b)
 
 <h3>
   主な機能
