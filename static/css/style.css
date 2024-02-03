@@ -87,7 +87,7 @@ img.tweet-image {
 .image-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 2px; /* 画像間の隙間 */
+  gap: 4px; /* 画像間の隙間 */
   
 }
 
